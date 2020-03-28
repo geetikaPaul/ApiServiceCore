@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogApiServiceCore.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApiServiceCore.Controllers
 {
-    public class Content
-    {
-        public int Id { get; set; }
-        public String Title { get; set; }
-        public String Body { get; set; }
-        public String ExtendedBody { get; set; }
-    }
-
+    
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -28,9 +22,11 @@ namespace BlogApiServiceCore.Controllers
         public IEnumerable<Content> Get()
         {
             List<Content> contents = new List<Content>();
+            ContentWrapper contentWrapper = new ContentWrapper();
+            ReadFileFromUrl read = new ReadFileFromUrl();
             int id = 0;
-            string path = string.Concat(Directory.GetCurrentDirectory(), "\\Blogs");
-            foreach (string file in Directory.EnumerateFiles(path, "*.txt"))
+            /*string path = string.Concat(Directory.GetCurrentDirectory(), "\\Blogs");
+            foreach (string file in Directory.EnumerateFiles("https://github.com/geetikaPaul/ApiServiceCore/tree/master/BlogApiServiceCore/Blogs", " *.txt"))
             {
                 string content = System.IO.File.ReadAllText(file);
                 if (content.Length > 1000)
@@ -41,8 +37,14 @@ namespace BlogApiServiceCore.Controllers
                     contents.Add(new Content() { Id = ++id, Body = body, ExtendedBody = extendedBody, Title = Path.GetFileName(file) });
                 }
                 else
-                    contents.Add(new Content() { Id = ++id, Body = content, ExtendedBody = "", Title = Path.GetFileName(file) });
-            }
+                   contents.Add(new Content() { Id = ++id, Body = content, ExtendedBody = "", Title = Path.GetFileName(file) });
+            }*/
+
+
+            string content = read.Reader("https://gpblogs.s3.amazonaws.com/file1.txt");
+            contents.Add(contentWrapper.Wrapper(content, 1, "file1"));
+            content = read.Reader("https://gpblogs.s3.amazonaws.com/file2.txt");
+            contents.Add(contentWrapper.Wrapper(content, 2, "file2"));
 
             return contents;
             /*return new List<Content>() { new Content() { Id = 1, Body = "body 1", ExtendedBody = "Extended body 1", Title = "title1" },
