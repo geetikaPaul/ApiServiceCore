@@ -27,7 +27,7 @@ namespace BlogApiServiceCore.Controllers
         }*/
         public IEnumerable<Content> Get()
         {
-            List<Content> contents = new List<Content>();
+            /*List<Content> contents = new List<Content>();
             int id = 0;
             foreach (string file in Directory.EnumerateFiles("C:\\Users\\gpaul3\\reactRedux\\blog", "*.txt"))
             {
@@ -43,9 +43,9 @@ namespace BlogApiServiceCore.Controllers
                     contents.Add(new Content() { Id = ++id, Body = content, ExtendedBody = "", Title = Path.GetFileName(file) });
             }
 
-            return contents;
-            //new List<Content>() { new Content() { Id = 1, Body = "body 1", ExtendedBody = "Extended body 1", Title = "title1" },
-             //new Content() { Id = 2, Body = "body 2", ExtendedBody = "Extended body 2", Title = "title2" } };
+            return contents;*/
+            return new List<Content>() { new Content() { Id = 1, Body = "body 1", ExtendedBody = "Extended body 1", Title = "title1" },
+             new Content() { Id = 2, Body = "body 2", ExtendedBody = "Extended body 2", Title = "title2" } };
         }
 
         // GET api/values/5
