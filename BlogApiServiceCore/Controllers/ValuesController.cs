@@ -13,67 +13,35 @@ namespace BlogApiServiceCore.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private const string s3Path = "https://gpblogs.s3.amazonaws.com/";
         // GET api/values
         [HttpGet]
-        /*public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }*/
+
         public IEnumerable<Content> Get()
         {
             List<Content> contents = new List<Content>();
             ContentWrapper contentWrapper = new ContentWrapper();
+            FileNameExtractor fileNameExtractor = new FileNameExtractor();
             ReadFileFromUrl read = new ReadFileFromUrl();
             int id = 0;
-            /*string path = string.Concat(Directory.GetCurrentDirectory(), "\\Blogs");
-            foreach (string file in Directory.EnumerateFiles("https://github.com/geetikaPaul/ApiServiceCore/tree/master/BlogApiServiceCore/Blogs", " *.txt"))
+
+            string files = read.Reader(s3Path);
+            List<string> fileNames = fileNameExtractor.Extractor(files).ToList();
+            foreach(string fileName in fileNames)
             {
-                string content = System.IO.File.ReadAllText(file);
-                if (content.Length > 1000)
+                string filePath = string.Concat(s3Path, fileName);
+                string content = read.Reader(filePath);
+                string title = fileName;
+                int charLocation = fileName.IndexOf('.', StringComparison.Ordinal);
+
+                if (charLocation > 0)
                 {
-                    string body = content.Substring(0, 1000);
-                    String extendedBody = content.Substring(content.Length - (content.Length - 1000));
-
-                    contents.Add(new Content() { Id = ++id, Body = body, ExtendedBody = extendedBody, Title = Path.GetFileName(file) });
+                    title = fileName.Substring(0, charLocation);
                 }
-                else
-                   contents.Add(new Content() { Id = ++id, Body = content, ExtendedBody = "", Title = Path.GetFileName(file) });
-            }*/
 
-
-            string content = read.Reader("https://gpblogs.s3.amazonaws.com/file1.txt");
-            contents.Add(contentWrapper.Wrapper(content, 1, "file1"));
-            content = read.Reader("https://gpblogs.s3.amazonaws.com/file2.txt");
-            contents.Add(contentWrapper.Wrapper(content, 2, "file2"));
-
+                contents.Add(contentWrapper.Wrapper(content, ++id, title));
+            }
             return contents;
-            /*return new List<Content>() { new Content() { Id = 1, Body = "body 1", ExtendedBody = "Extended body 1", Title = "title1" },
-             new Content() { Id = 2, Body = "body 2", ExtendedBody = "Extended body 2", Title = "title2" } };*/
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
