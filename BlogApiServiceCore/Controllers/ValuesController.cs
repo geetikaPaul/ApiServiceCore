@@ -31,6 +31,11 @@ namespace BlogApiServiceCore.Controllers
             {
                 string filePath = string.Concat(s3Path, fileName);
                 string content = read.Reader(filePath);
+
+                var parser = new MarkdownSharp.Markdown();
+                if (fileName.Contains(".md"))
+                 content = parser.Transform(content.Trim());
+
                 string title = fileName;
                 int charLocation = fileName.IndexOf('.', StringComparison.Ordinal);
 
