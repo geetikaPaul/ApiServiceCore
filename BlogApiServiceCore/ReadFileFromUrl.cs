@@ -17,7 +17,6 @@ namespace BlogApiServiceCore
             Stream stream = myBotNewVersionClient.OpenRead(url);
             StreamReader reader = new StreamReader(stream);
             String content = reader.ReadToEnd();
-
             return content;
 
         }

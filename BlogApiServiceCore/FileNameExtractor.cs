@@ -24,7 +24,7 @@ namespace BlogApiServiceCore
 
         private static void DisplayNodes(XmlNode node, ref List<string> fileNames)
         {            
-            if (node.Name.Equals("Key"))
+            if (node.Name.Equals("Key") && (node.InnerText.Contains("/") || node.InnerText.Contains(".")))
                 fileNames.Add(node.InnerText);
 
             XmlNodeList children = node.ChildNodes;
