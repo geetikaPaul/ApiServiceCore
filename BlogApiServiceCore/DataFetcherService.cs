@@ -63,7 +63,7 @@ namespace BlogApiServiceCore
 
             foreach (string fileName in fileNames)
             {
-                if (fileName.Contains("/"))
+                if (fileName.Contains("/") && !fileName.Contains("Resume"))
                 {
                     categories.Add(fileName.Split("/")[0]);
                 }

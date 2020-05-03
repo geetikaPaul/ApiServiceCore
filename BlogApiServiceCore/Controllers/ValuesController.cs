@@ -34,5 +34,12 @@ namespace BlogApiServiceCore.Controllers
         {
             return DataFetcherService.GetCategories();
         }
+
+        [HttpGet]
+        [Route("api/[controller]/GetResume")]
+        public string GetResume()
+        {
+            return Constants.resumePath;
+        }
     }
 }
